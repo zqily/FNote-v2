@@ -1,100 +1,108 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/zqil/FNote/main/.github/assets/icon.png" alt="FNote Logo" width="128">
+  <img src="icon.png" alt="FNote Logo" width="128" height="128">
 </p>
 
-<h1 align="center">FNote Music Player</h1>
+<h1 align="center">FNote - Your Local Music Sanctuary</h1>
 
 <p align="center">
-  <strong>A sleek, tag-based music player for content creators, built with Python & Gemini.</strong>
-</p>
-
-<p align="center">
-    <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License">
-    <img src="https://img.shields.io/badge/python-3.8+-informational.svg" alt="Python Version">
-    <a href="https://www.youtube.com/@Zqily"><img src="https://img.shields.io/badge/YouTube-%40Zqily-red" alt="YouTube"></a>
-    <a href="https://github.com/zqil/FNote/actions/workflows/python-app.yml"><img src="https://github.com/zqil/FNote/actions/workflows/python-app.yml/badge.svg" alt="CI Status"></a>
-    <a href="https://gemini.google.com/"><img src="https://img.shields.io/badge/Made%20with-Gemini%20AI-9A4BEE" alt="Made with Gemini"></a>
+  A powerful, offline-first music library manager and player, built for creators and enthusiasts.
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/zqil/FNote/main/.github/assets/fnote_showcase.gif" alt="FNote Showcase GIF">
+  <a href="https://github.com/zqily/fnote/releases/latest">
+    <img src="https://img.shields.io/github/v/release/zqily/fnote?style=for-the-badge&label=Latest%20Version" alt="Latest Release">
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/github/license/zqily/fnote?style=for-the-badge&color=blue" alt="License">
+  </a>
+  <br>
+  <img src="https://img.shields.io/badge/Windows-Supported-blue?style=flat-square&logo=windows" alt="Windows Support">
+  <img src="https://img.shields.io/badge/macOS-From Source-lightgrey?style=flat-square&logo=apple" alt="macOS Support">
+  <img src="https://img.shields.io/badge/Linux-From Source-lightgrey?style=flat-square&logo=linux" alt="Linux Support">
+  <img src="https://img.shields.io/badge/Coded_with-Gemini_AI-4285F4?style=flat-square&logo=google" alt="Coded with Gemini">
 </p>
 
-FNote is a modern, offline music player designed from the ground up to help content creators and streamers quickly find the perfect track for their content. Instead of just playlists, FNote uses a powerful tagging system, allowing you to categorize your music by **Genre**, **Mood**, and **Use Case**.
+---
+
+FNote is more than just a music player; it's a powerful tool for managing your local and web-sourced audio library. Designed from the ground up to be fast, private, and highly customizable, FNote gives you complete control over your music without relying on cloud services.
+
+
+*(**Note:** You should replace the link above with a direct link to a screenshot of your app!)*
 
 ## ✨ Key Features
 
--   🎵 **Powerful Tagging System**: Organize your library with customizable tags for Genre, Mood, Vibe, Use Case, and more.
--   🌐 **Download from URL**: Directly import audio from YouTube, SoundCloud, and hundreds of other sites, powered by `yt-dlp`.
--   🎨 **Dynamic Accent Colors**: The UI automatically adapts its accent color based on the current song's cover art for a beautiful, immersive experience.
--   🔍 **Advanced Search**: Instantly filter your current list or search your entire library by title, artist, and multiple tags at once.
--   ⏯️ **Mini-Player Mode**: Shrink the player down to a sleek, always-on-top widget for easy control while you work.
--   🎧 **Auto-Pause**: FNote intelligently pauses your music when another application plays audio and resumes when it's done. (Windows, with experimental support for macOS/Linux)
--   💬 **Discord Integration**: Show your currently playing track on your Discord profile with Rich Presence.
--   📦 **Portable Playlists**: Import and export playlists in the `.fnlist` format, which bundles all metadata and audio files into a single, shareable archive.
--   ⌨️ **Full Keyboard Control**: Navigate, manage, and control your music without ever touching the mouse.
+-   🎵 **Universal Importer:** Import audio from local files or directly from URLs (YouTube, SoundCloud, and more) with automatic metadata fetching.
+-   🏷️ **Advanced Tagging System:** Organize your library with a multi-category tagging system. Create, rename, merge, and delete tags to build the perfect organizational structure.
+-   🔍 **Powerful Search:** Instantly filter your current view or perform a global search across your entire library by title, artist, or tags (`t:tagname`).
+-   📜 **Robust Playlist Management:** Create unlimited playlists, reorder them with drag-and-drop, and easily move songs between them.
+-   🚀 **Mini-Player Mode:** Switch to a sleek, always-on-top mini-player for unobtrusive playback control.
+-   🎧 **Intelligent Auto-Pause:** FNote automatically pauses when another application plays audio and resumes when it's done (Windows supported, other OS experimental).
+-   🎮 **Discord Rich Presence:** Show your friends what you're listening to with seamless Discord integration.
+-   🎨 **Dynamic UI:** The user interface's accent color dynamically adapts to the cover art of the currently playing song.
+-   ⚙️ **Highly Configurable:** Customize everything from startup behavior and notification duration to file associations and ignored applications for auto-pause.
 
 ## 🚀 Installation
 
-The easiest way to get started is by using the official installer for your operating system.
+### For Windows Users (Recommended)
 
-### Windows
+The easiest way to get started is by downloading the latest installer from the Releases page.
 
-1.  Go to the [**Releases**](https://github.com/zqil/FNote/releases) page.
-2.  Download the `FNote-Setup.exe` file from the latest release.
-3.  Run the installer. It includes everything you need, including FFmpeg for URL downloads.
+1.  Go to the **[Latest Release](https://github.com/zqily/fnote/releases/latest)**.
+2.  Download the `FNote-Setup.exe` file.
+3.  Run the installer. It's a standard Inno Setup installer and includes the required **FFmpeg** for URL downloads.
 
-### From Source (For Developers)
+### Running from Source (For macOS, Linux, and Developers)
 
-If you'd rather build from the source, you can follow these steps:
+If you're on a non-Windows OS or prefer to run from source:
 
-1.  **Prerequisites**:
-    *   Python 3.8+
-    *   Git
-    *   [FFmpeg](https://ffmpeg.org/download.html) (must be in your system's PATH for URL downloads to work)
-
-2.  **Clone and Install**:
+1.  **Clone the repository:**
     ```bash
-    # Clone the repository
-    git clone https://github.com/zqil/FNote.git
-    cd FNote
+    git clone https://github.com/zqily/fnote.git
+    cd fnote
+    ```
 
-    # Create a virtual environment (recommended)
+2.  **Create a virtual environment and install dependencies:**
+    ```bash
+    # Create a venv
     python -m venv venv
-    source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
 
-    # Install dependencies
+    # Activate it
+    # On Windows:
+    .\venv\Scripts\activate
+    # On macOS/Linux:
+    source venv/bin/activate
+
+    # Install requirements
     pip install -r requirements.txt
     ```
 
-3.  **Run the App**:
+3.  **Run the application:**
     ```bash
     python app.py
     ```
 
-## 🛠️ Tech Stack
+## 🛠️ How It Works (Tech Stack)
 
--   **Backend**: Python
--   **GUI**: `pywebview` (a lightweight cross-platform wrapper around native webview components)
--   **Database**: SQLite
--   **Frontend**: Vanilla JavaScript (ESM), HTML5, CSS3
--   **Audio Metadata**: `mutagen`
--   **Packaging**: `PyInstaller` (for the executable) & `Inno Setup` (for the Windows installer)
+FNote is built with a Python backend and a web-based frontend, creating a responsive and modern desktop application.
 
-## A Story from the Creator
+-   **Backend:** Python
+-   **GUI Framework:** `pywebview` (a lightweight cross-platform wrapper around a webview)
+-   **Database:** SQLite for fast, local data storage.
+-   **Frontend:** Vanilla JavaScript (ESM), HTML5, CSS3.
+-   **Audio Metadata:** `mutagen`
+-   **URL Downloads:** `yt-dlp`
 
-Hey, I'm **zqil**! I'm a YouTuber and a self-proclaimed AI coder. I had this idea for a music player that worked the way *I* think about music for my videos—not by album, but by vibe and use case. So, I decided to build it.
+## 👨‍💻 About Me
 
-Here's the fun part: **I wrote this entire application with the help of Google's Gemini.** It was an incredible journey of prompting, debugging, and learning alongside an AI. From the complex database logic in Python to the intricate UI animations in JavaScript, Gemini was my coding partner.
+Hi, I'm **zqil**!
 
-If you're curious about my work or want to see what else I'm up to, check me out!
--   **YouTube**: [youtube.com/@Zqily](https://www.youtube.com/@Zqily)
--   **Website**: [zqil.net](http://zqil.net)
+I'm a YouTuber and a self-proclaimed AI coder. This entire application, from the Python backend to the complex JavaScript frontend, was developed as a personal project with the extensive help of Google's Gemini AI. It's a testament to how modern tools can empower solo developers to create complex, feature-rich applications.
 
-## ❤️ Contributing
-
-Contributions are welcome! Whether it's a bug report, a feature request, or a pull request, your help is appreciated. Please read the [**Contributing Guidelines**](./CONTRIBUTING.md) to get started.
+You can find me here:
+-   **GitHub:** [@zqily](https://github.com/zqily) (since zqil was taken!)
+-   **YouTube:** [@Zqily](https://www.youtube.com/@Zqily)
+-   **Website:** [zqil.net](http://zqil.net) (Yes, `http`! I'll get around to updating it... eventually.)
 
 ## 📄 License
 
-This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
