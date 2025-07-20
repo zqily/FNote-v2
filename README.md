@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="1024" height="1024" alt="favicon" src="https://github.com/user-attachments/assets/4de38a29-2862-464c-9220-5f14c4a3618e" />
+  <img src="https://raw.githubusercontent.com/zqily/FNote-v2/main/.github/favicon.png" alt="FNote Logo" width="200"/>
 
   <h1>FNote Music Player</h1>
   <p><strong>Your Personal, Offline-First Music Library. Built for Creators, Curators, and You.</strong></p>
@@ -70,7 +70,7 @@ My role was to:
 -   Debug, test, and stitch together the generated code.
 -   Refine the UI/UX based on the results.
 
-This project demonstrates the incredible power of modern AI as a tool for creation and rapid prototyping. In short, it's a testament to a new era of software development.
+This project demonstrates the incredible power of modern AI as a tool for creation and rapid prototyping. In short, it's a testament to a **new era of software development**.
 
 ## 👤 About the Author
 
