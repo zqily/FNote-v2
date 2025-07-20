@@ -7,8 +7,8 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/zqily/fnote/releases/latest">
-    <img src="https://img.shields.io/github/v/release/zqily/fnote?style=for-the-badge&label=Latest%20Version" alt="Latest Release">
+  <a href="https://github.com/zqily/fnote-v2/releases/latest">
+    <img src="https://img.shields.io/github/v/release/zqily/fnote-v2?style=for-the-badge&label=Latest%20Version" alt="Latest Release">
   </a>
   <a href="LICENSE">
     <img src="https://img.shields.io/github/license/zqily/fnote?style=for-the-badge&color=blue" alt="License">
@@ -22,10 +22,7 @@
 
 ---
 
-FNote is more than just a music player; it's a powerful tool for managing your local and web-sourced audio library. Designed from the ground up to be fast, private, and highly customizable, FNote gives you complete control over your music without relying on cloud services.
-
-
-*(**Note:** You should replace the link above with a direct link to a screenshot of your app!)*
+FNote is a powerful tool for managing your local and web-sourced audio library. Designed from the ground up to be fast, private, and highly customizable, FNote gives you complete control over your music without relying on cloud services.
 
 ## ✨ Key Features
 
@@ -45,7 +42,7 @@ FNote is more than just a music player; it's a powerful tool for managing your l
 
 The easiest way to get started is by downloading the latest installer from the Releases page.
 
-1.  Go to the **[Latest Release](https://github.com/zqily/fnote/releases/latest)**.
+1.  Go to the **[Latest Release](https://github.com/zqily/fnote-v2/releases/latest)**.
 2.  Download the `FNote-Setup.exe` file.
 3.  Run the installer. It's a standard Inno Setup installer and includes the required **FFmpeg** for URL downloads.
 
