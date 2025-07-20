@@ -50,7 +50,7 @@ FNote is packed with features designed to give you ultimate control over your au
 The easiest way to get started with FNote is to download the latest release.
 
 1.  Go to the [**Releases Page**](https://github.com/zqily/FNote-v2/releases/latest).
-2.  Download the `fnote-setup.exe` installer.
+2.  Download the `setup-fnote.exe` installer.
 3.  Run the installer. FFmpeg, which is required for URL downloads, is bundled for your convenience!
 
 ### Running from Source
