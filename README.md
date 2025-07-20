@@ -1,6 +1,4 @@
-<p align="center">
-  <img src="icon.png" alt="FNote Logo" width="128" height="128">
-</p>
+<img width="1024" height="1024" alt="favicon" src="https://github.com/user-attachments/assets/71e72319-2b2e-46e1-a587-ee0b5e467842" />
 
 <h1 align="center">FNote - Your Local Music Sanctuary</h1>
 
