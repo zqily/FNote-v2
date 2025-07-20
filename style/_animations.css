@@ -1,0 +1,81 @@
+/* ==========================================================================
+Animations & Custom Scrollbars
+========================================================================== */
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes toast-in { from { transform: translateX(110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes toast-out { from { transform: translateX(0); opacity: 1; } to { transform: translateX(110%); opacity: 0; } }
+@keyframes shrink-width { from { width: 100%; } to { width: 0%; } }
+@keyframes settings-fade-in {
+from {
+opacity: 0;
+transform: translateY(5px);
+}
+to {
+opacity: 1;
+transform: translateY(0);
+}
+}
+@keyframes pulse-override {
+    0% {
+        box-shadow: 0 4px 20px -5px rgba(74, 85, 104, 0.7);
+    }
+    50% {
+        box-shadow: 0 4px 30px -5px rgba(74, 85, 104, 1);
+    }
+    100% {
+        box-shadow: 0 4px 20px -5px rgba(74, 85, 104, 0.7);
+    }
+}
+@keyframes repeat-one-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+#playlist-list::-webkit-scrollbar,
+#song-list::-webkit-scrollbar,
+.autocomplete-results::-webkit-scrollbar,
+#playlist-selection-groups-container::-webkit-scrollbar,
+.edit-details-content::-webkit-scrollbar,
+.tag-management-content::-webkit-scrollbar,
+#audio-blacklist-container::-webkit-scrollbar,
+#tag-builder-popover::-webkit-scrollbar,
+.settings-tab-content::-webkit-scrollbar {
+width: 8px;
+}
+#playlist-list::-webkit-scrollbar-track,
+#song-list::-webkit-scrollbar-track,
+.autocomplete-results::-webkit-scrollbar-track,
+#playlist-selection-groups-container::-webkit-scrollbar-track,
+.edit-details-content::-webkit-scrollbar-track,
+.tag-management-content::-webkit-scrollbar-track,
+#audio-blacklist-container::-webkit-scrollbar-track,
+#tag-builder-popover::-webkit-scrollbar-track,
+.settings-tab-content::-webkit-scrollbar-track {
+background: transparent;
+}
+#playlist-list::-webkit-scrollbar-thumb,
+#song-list::-webkit-scrollbar-thumb {
+background-color: var(--slider-track);
+border-radius: 4px;
+border: 2px solid var(--sidebar-color);
+}
+.autocomplete-results::-webkit-scrollbar-thumb,
+#playlist-selection-groups-container::-webkit-scrollbar-thumb,
+.edit-details-content::-webkit-scrollbar-thumb,
+.tag-management-content::-webkit-scrollbar-thumb,
+#audio-blacklist-container::-webkit-scrollbar-thumb,
+#tag-builder-popover::-webkit-scrollbar-thumb,
+.settings-tab-content::-webkit-scrollbar-thumb {
+background-color: var(--slider-track);
+border-radius: 4px;
+border: 2px solid rgba(0,0,0,0.2);
+}
+#playlist-list::-webkit-scrollbar-thumb:hover,
+#song-list::-webkit-scrollbar-thumb:hover,
+.autocomplete-results::-webkit-scrollbar-thumb:hover,
+#playlist-selection-groups-container::-webkit-scrollbar-thumb:hover,
+.edit-details-content::-webkit-scrollbar-thumb:hover,
+.tag-management-content::-webkit-scrollbar-thumb:hover,
+#audio-blacklist-container::-webkit-scrollbar-thumb:hover,
+#tag-builder-popover::-webkit-scrollbar-thumb:hover,
+.settings-tab-content::-webkit-scrollbar-thumb:hover {
+background-color: #6a6a6a;
+}

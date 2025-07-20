@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FNote Mini</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="mini-player-body">
+    <div id="mini-player-container">
+        <img id="mini-album-art" src="" alt="Album Art">
+        
+        <div id="mini-song-info">
+            <span id="mini-song-title">No Song</span>
+            <span id="mini-song-artist"></span>
+        </div>
+
+        <div id="mini-buttons">
+            <button id="mini-shuffle-btn" class="mini-btn secondary" title="Shuffle">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="shuffle-icon"
+                >
+                  <path class="shuffle-static" d="M16 3h5v5"/>
+                  <path class="shuffle-static" d="M4 20L21 3"/>
+                  <path class="shuffle-static" d="M21 16v5h-5"/>
+                  <path class="shuffle-line-bottom" d="M15 15l6 6"/>
+                  <path class="shuffle-line-top" d="M4 4l5 5"/>
+                </svg>
+            </button>
+            <button id="mini-prev-btn" class="mini-btn" title="Previous"><i data-feather="skip-back"></i></button>
+            <button id="mini-play-pause-btn" class="mini-btn" title="Play/Pause"><i data-feather="play"></i></button>
+            <button id="mini-next-btn" class="mini-btn" title="Next"><i data-feather="skip-forward"></i></button>
+            <button id="mini-repeat-btn" class="mini-btn secondary" title="Repeat">
+                <svg id="mini-loop-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                    <g class="loop-top">
+                        <path d="M17 1L21 5L17 9"/>
+                        <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                    </g>
+                    <g class="loop-bottom">
+                        <path d="M7 23L3 19L7 15"/>
+                        <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                    </g>
+                </svg>
+            </button>
+        </div>
+        
+        <div id="mini-seek-bar-area">
+            <span id="mini-current-time">00:00</span>
+            <input type="range" id="mini-seek-bar" min="0" max="1" step="0.001" value="0">
+            <span id="mini-total-duration">00:00</span>
+        </div>
+
+        <div id="mini-extra-controls">
+             <div class="mini-volume-container">
+                <button id="mini-volume-toggle-btn" class="mini-btn" title="Mute"><i data-feather="volume-2"></i></button>
+                <input type="range" id="mini-volume-slider" min="0" max="100" value="100" title="Volume" orient="vertical">
+            </div>
+            <button id="mini-maximize-btn" class="mini-btn" title="Maximize"><i data-feather="maximize-2"></i></button>
+        </div>
+    </div>
+    <div id="override-tooltip" class="override-tooltip"></div>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script type="module" src="mini_player.js"></script>
+</body>
+</html>
+<!--  -->

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FNote</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- ===== SPLASH SCREEN ===== -->
+<div id="splash-screen">
+    <div class="splash-content">
+        <img class="fnote-icon" src="icon.png" alt="FNote Icon">
+        <div class="splash-status-container">
+            <span id="splash-status-text">Initializing...</span>
+            <div id="splash-spinner" class="spinner"></div>
+        </div>
+        <div id="splash-error-container" class="hidden">
+            <p id="splash-error-message"></p>
+            <button id="splash-retry-btn" class="modal-btn small-btn accent">Retry</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- ===== SIDEBAR ===== -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img class="fnote-icon" src="icon.png" alt="FNote Icon">
+            <h1>FNote</h1>
+        </div>
+        <button id="import-btn">
+            <i data-feather="plus-circle"></i>
+            <span>Import Songs</span>
+        </button>
+        <div class="playlist-container">
+            <!-- Search Box -->
+            <div class="search-container">
+                <button id="search-mode-toggle" class="icon-btn" title="Switch to Global Search">
+                    <i data-feather="list"></i>
+                </button>
+                <div class="search-input-container">
+                    <input type="search" id="search-input" placeholder="Filter current list...">
+                    <button id="search-clear-btn" class="hidden" title="Clear search">
+                        <i data-feather="x"></i>
+                    </button>
+                    <button id="tag-builder-btn" class="icon-btn" title="Filter by Tag">
+                        <i data-feather="tag"></i>
+                    </button>
+                    <div id="autocomplete-results" class="autocomplete-results hidden"></div>
+                </div>
+            </div>
+            <!-- Playlists Section -->
+            <div class="playlists-section">
+                <div class="playlists-header">
+                    <h4>Playlists</h4>
+                    <button id="add-playlist-btn" class="icon-btn" title="New Playlist">
+                        <i data-feather="plus"></i>
+                    </button>
+                </div>
+                <ul id="playlist-list">
+                    <!-- JS-populated playlist items -->
+                </ul>
+            </div>
+
+            <div id="vertical-resize-handle" class="vertical-resize-handle"></div>
+
+            <!-- Active List Section (Shows Playlist songs OR Queue) -->
+            <div class="active-list-section">
+                <div class="active-list-header">
+                    <h4 id="active-list-title">Songs in Default</h4>
+                    <div>
+                        <button id="clear-queue-btn" class="icon-btn hidden" title="Clear Queue">
+                            <i data-feather="trash"></i>
+                        </button>
+                        <button id="view-toggle-btn" class="icon-btn" title="View Queue">
+                            <i data-feather="list"></i>
+                        </button>
+                    </div>
+                </div>
+                <ul id="song-list">
+                    <!-- Songs will be added here by the virtual list renderer -->
+                </ul>
+                <div id="playlist-empty-state" class="playlist-empty-state hidden">
+                    <i data-feather="slash"></i>
+                    <h3>Playlist is empty</h3>
+                    <p>Click "Import Songs" to begin.</p>
+                </div>
+                <div id="queue-empty-state" class="playlist-empty-state hidden">
+                    <i data-feather="list"></i>
+                    <h3>Queue is empty</h3>
+                    <p>Right-click a song and select "Add to Queue".</p>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-footer">
+            <div id="ffmpeg-warning" class="ffmpeg-warning hidden">
+                <i data-feather="alert-triangle"></i>
+                <span>FFmpeg not found. <a href="https://ffmpeg.org/download.html" target="_blank" title="Opens in your browser">Install it</a> for URL downloads.</span>
+            </div>
+            <div id="global-status" class="global-status hidden">
+                <div id="global-status-spinner" class="spinner"></div>
+                <div class="global-status-text-container">
+                    <span id="global-status-text"></span>
+                    <span id="global-status-summary"></span>
+                </div>
+            </div>
+            <button id="settings-btn">
+                <i data-feather="settings"></i>
+                <span>Settings</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== RESIZE HANDLE ===== -->
+    <div id="resize-handle" class="resize-handle"></div>
+
+    <!-- ===== MAIN PLAYER PANEL ===== -->
+    <div class="player-panel" id="player-panel">
+        <div class="album-art-container">
+            <img id="album-art-img" src="" alt="Album Art" class="hidden">
+            <div id="album-art-placeholder" class="album-art-placeholder">
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+                <div class="eq-bar"></div>
+            </div>
+        </div>
+        <div class="song-info">
+            <h2 id="current-song-title">No Song Selected</h2>
+            <p id="current-song-artist">Import a song to get started</p>
+        </div>
+        <div class="seek-bar-container">
+            <span id="current-time">00:00</span>
+            <div class="seek-bar-wrapper">
+                <input type="range" id="seek-bar" min="0" max="1" step="0.001" value="0">
+                <div id="marker-container"></div>
+            </div>
+            <span id="total-duration">00:00</span>
+        </div>
+        <div class="controls">
+            <button id="shuffle-btn" class="control-btn secondary" title="Shuffle">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="shuffle-icon"
+                >
+                  <path class="shuffle-static" d="M16 3h5v5"/>
+                  <path class="shuffle-static" d="M4 20L21 3"/>
+                  <path class="shuffle-static" d="M21 16v5h-5"/>
+                  <path class="shuffle-line-bottom" d="M15 15l6 6"/>
+                  <path class="shuffle-line-top" d="M4 4l5 5"/>
+                </svg>
+            </button>
+            <button id="prev-btn" class="control-btn" title="Previous"><i data-feather="skip-back"></i></button>
+            <button id="play-pause-btn" class="control-btn play-btn" title="Play/Pause"><i data-feather="play"></i></button>
+            <button id="next-btn" class="control-btn" title="Next"><i data-feather="skip-forward"></i></button>
+            <button id="repeat-btn" class="control-btn secondary" title="Repeat">
+                <svg id="loop-icon"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round">
+                    <g class="loop-top">
+                        <path d="M17 1L21 5L17 9"/>
+                        <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                    </g>
+                    <g class="loop-bottom">
+                        <path d="M7 23L3 19L7 15"/>
+                        <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                    </g>
+                </svg>
+            </button>
+            <button id="add-marker-btn" title="Add Marker (Shift+M)" class="control-btn secondary"><i data-feather="bookmark"></i></button>
+            <div class="volume-container">
+                <button id="volume-toggle-btn" class="control-btn" title="Mute (M)">
+                    <svg id="volume-icon" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                        <path class="volume-speaker" d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                        <path class="volume-wave-small" d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        <path class="volume-wave-large" d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                        <g class="volume-mute-x">
+                            <line x1="15" y1="9" x2="21" y2="15"></line>
+                            <line x1="15" y1="15" x2="21" y2="9"></line>
+                        </g>
+                    </svg>
+                </button>
+                <input type="range" id="volume-slider" min="0" max="100" value="100" title="Volume">
+            </div>
+        </div>
+        <button id="mini-player-btn" title="Mini-Player" class="control-btn secondary"><i data-feather="minimize-2"></i></button>
+    </div>
+</div>
+
+<!-- This container will hold all toast notifications -->
+<div id="toast-container"></div>
+
+<!-- ===== IMPORT MODAL ===== -->
+<div id="import-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <button id="modal-back-btn" class="modal-back-btn icon-btn hidden" title="Back">
+                <i data-feather="arrow-left"></i>
+            </button>
+            <h3 id="import-modal-title">Import Music</h3>
+            <button id="close-modal-btn" class="modal-close-btn" title="Close">×</button>
+        </div>
+        <div class="modal-content">
+            <div id="import-method-section">
+                <p>Choose your import method:</p>
+                <div class="modal-options">
+                    <button id="modal-import-files" class="modal-btn">
+                        <i data-feather="folder"></i> From Files
+                    </button>
+                    <button id="modal-import-url" class="modal-btn">
+                        <i data-feather="youtube"></i> From URL
+                    </button>
+                </div>
+            </div>
+
+            <div id="url-import-section" class="hidden">
+                <input type="text" id="url-input" placeholder="Paste YouTube, SoundCloud, etc. URL">
+                <div class="modal-options">
+                    <button id="fetch-url-btn" class="modal-btn accent">
+                        <i data-feather="arrow-right-circle"></i> Fetch Info
+                    </button>
+                </div>
+                <p id="url-status"></p>
+            </div>
+
+            <div id="playlist-selection-section" class="hidden">
+                <h4 id="playlist-selection-title"></h4>
+                <div class="playlist-selection-controls">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="select-all-checkbox">
+                        Select All
+                    </label>
+                </div>
+                <div id="playlist-selection-groups-container">
+                    <!-- Populated by JS with groups or a single list -->
+                </div>
+                <button id="download-selected-btn" class="modal-btn accent">
+                    <i data-feather="download"></i> Download Selected
+                </button>
+                <p id="selection-download-status"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== SETTINGS MODAL ===== -->
+<div id="settings-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Settings</h3>
+            <button id="close-settings-modal-btn" class="modal-close-btn" title="Close">×</button>
+        </div>
+        <div class="modal-content">
+            <div class="settings-tabs">
+                <button class="settings-tab-btn active" data-tab="general">General</button>
+                <button class="settings-tab-btn" data-tab="library">Library & Audio</button>
+            </div>
+            <div class="settings-tab-content">
+                <!-- General Settings Pane -->
+                <div id="settings-tab-general" class="settings-tab-pane active">
+                    <div class="setting-item">
+                        <label>Version</label>
+                        <span>FNote v1.0.0</span>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <label for="toast-duration-input">Toast Duration</label>
+                            <p class="setting-item-description">How long notifications stay on screen (in seconds). Set to 0 to disable auto-hiding.</p>
+                        </div>
+                        <input type="number" id="toast-duration-input" min="0" step="0.5" value="3" class="setting-input">
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <label for="run-on-startup-toggle">Run on Startup</label>
+                            <p class="setting-item-description">Automatically start FNote when you log in to your computer. Requires app restart on some systems.</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="run-on-startup-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div id="resume-on-startup-setting" class="setting-item dependent-setting hidden">
+                        <div>
+                            <label for="resume-on-startup-toggle">Resume playback on startup</label>
+                            <p class="setting-item-description">If enabled, the last played song will automatically resume when FNote starts with your computer.</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="resume-on-startup-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <label>File Association</label>
+                            <p class="setting-item-description">Register FNote to open .fnlist files. This may require administrator privileges.</p>
+                        </div>
+                        <button id="register-file-type-btn" class="modal-btn small-btn accent">Register</button>
+                    </div>
+                </div>
+
+                <!-- Library & Audio Settings Pane -->
+                <div id="settings-tab-library" class="settings-tab-pane">
+                    <div class="setting-item">
+                        <div>
+                            <label>Refresh Cover Accents</label>
+                            <p class="setting-item-description">Recalculates UI accent colors for all songs based on their cover art. This is useful after an update to the color calculation logic.</p>
+                        </div>
+                        <button id="refresh-accents-btn" class="modal-btn small-btn accent">Refresh</button>
+                    </div>
+                     <div class="setting-item">
+                        <div>
+                            <label>Manage Tags</label>
+                            <p class="setting-item-description">Rename, delete, or merge tags across your entire library.</p>
+                        </div>
+                        <button id="manage-tags-btn" class="modal-btn small-btn accent">Manage</button>
+                    </div>
+                     <div class="setting-item">
+                        <div>
+                            <label>Download Engine (yt-dlp)</label>
+                            <p class="setting-item-description">
+                                Keeps the URL download functionality up-to-date.
+                                Current version: <span id="ytdlp-version">checking...</span>
+                            </p>
+                        </div>
+                        <button id="ytdlp-update-btn" class="modal-btn small-btn accent">Check for Update</button>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <label for="auto-pause-toggle">Auto-pause on External Audio</label>
+                            <p class="setting-item-description">Automatically pauses FNote when another application plays sound, and resumes when it stops. (Supported on Windows, experimental on other OS's)</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="auto-pause-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item">
+                        <div>
+                            <label for="discord-presence-toggle">Enable Discord Rich Presence</label>
+                            <p class="setting-item-description">Show your current song on your Discord profile. Requires Discord to be running.</p>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="discord-presence-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="setting-item column-layout">
+                        <div>
+                            <label>Auto-pause Blacklist</label>
+                            <p class="setting-item-description">
+                                Processes in this list will be ignored by the auto-pause feature. Add executable names (e.g., "spotify.exe").
+                            </p>
+                        </div>
+                        <div id="audio-blacklist-editor">
+                             <div id="audio-blacklist-container">
+                                <!-- JS-populated list -->
+                            </div>
+                            <div class="blacklist-add-row">
+                                <input type="text" id="audio-blacklist-input" placeholder="Add process name...">
+                                <button id="audio-blacklist-add-btn" class="modal-btn small-btn accent">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="settings-info">More settings will be available in future updates.</p>
+        </div>
+    </div>
+</div>
+
+
+<!-- ===== EDIT DETAILS MODAL ===== -->
+<div id="edit-details-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Edit Song Details</h3>
+            <button id="close-edit-details-modal-btn" class="modal-close-btn" title="Close">×</button>
+        </div>
+        <div class="modal-content edit-details-content">
+            <div class="edit-details-left-panel">
+                <div class="edit-details-cover-wrapper">
+                    <img id="edit-details-cover-img" src="" alt="Album Art">
+                    <button id="edit-details-change-cover-btn" class="modal-btn">
+                        <i data-feather="image"></i> Change Cover
+                    </button>
+                </div>
+                <div class="edit-details-fields">
+                    <label for="edit-details-title-input">Title</label>
+                    <input type="text" id="edit-details-title-input" placeholder="Song Title">
+                    <label for="edit-details-artist-input">Artist</label>
+                    <input type="text" id="edit-details-artist-input" placeholder="Artist Name">
+                </div>
+            </div>
+            <div class="edit-details-tags-section">
+                <h4>Tags</h4>
+                <div id="edit-details-tags-container">
+                    <!-- Populated by JS with tag categories and pills -->
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <label class="checkbox-label" title="Writes metadata like title and artist directly into the audio file.">
+                <input type="checkbox" id="edit-details-save-to-file-toggle" checked>
+                Save to file tags (ID3)
+            </label>
+            <div class="modal-footer-actions">
+                <button id="edit-details-cancel-btn" class="modal-btn">Cancel</button>
+                <button id="edit-details-save-btn" class="modal-btn accent">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== TAG MANAGEMENT MODAL ===== -->
+<div id="tag-management-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Manage Tags</h3>
+            <button id="close-tag-management-modal-btn" class="modal-close-btn" title="Close">×</button>
+        </div>
+        <div class="modal-content tag-management-content">
+            <p class="modal-instructions">
+                - Click a tag name to rename it.<br>
+                - Click the <i data-feather="trash-2" class="inline-feather"></i> icon to delete a tag.<br>
+                - Drag one tag onto another in the same category to merge them.<br>
+                <small>Default tags cannot be modified.</small>
+            </p>
+            <div id="tag-management-list-container">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+        <div class="modal-footer">
+             <button id="tag-management-done-btn" class="modal-btn accent">Done</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== PROGRESS MODAL ===== -->
+<div id="progress-modal" class="modal-overlay">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="progress-modal-title">Progress</h3>
+        </div>
+        <div class="modal-content progress-modal-content">
+            <ul id="progress-list">
+                <!-- JS Populated -->
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <div class="modal-footer-actions">
+                <button id="progress-modal-hide-btn" class="modal-btn">Hide</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ADD PLAYLIST POPOVER (Initially Hidden) ===== -->
+<div id="add-playlist-popover" class="context-menu hidden">
+    <div id="create-new-playlist-btn" class="context-menu-item">
+        <i data-feather="edit-3"></i><span>Create New Playlist</span>
+    </div>
+    <div id="import-playlist-btn" class="context-menu-item">
+        <i data-feather="download"></i><span>Import from File...</span>
+    </div>
+</div>
+
+<!-- ===== EXPORT PLAYLIST POPOVER (Initially Hidden) ===== -->
+<div id="export-playlist-popover" class="context-menu hidden">
+    <div id="export-fnlist-btn" class="context-menu-item">
+        <i data-feather="archive"></i><span>FNote Backup (.fnlist)</span>
+    </div>
+    <div id="export-m3u-btn" class="context-menu-item">
+        <i data-feather="file-text"></i><span>Standard Playlist (.m3u)</span>
+    </div>
+</div>
+
+<!-- ===== TAG BUILDER POPOVER (Initially Hidden) ===== -->
+<div id="tag-builder-popover" class="context-menu hidden">
+    <div id="tag-builder-container">
+        <!-- JS-populated tag categories and pills -->
+    </div>
+</div>
+
+<!-- ===== SONG CONTEXT MENU (Initially Hidden) ===== -->
+<div id="context-menu" class="context-menu hidden">
+    <div id="edit-details-btn" class="context-menu-item">
+        <i data-feather="edit"></i><span>Edit Details</span>
+    </div>
+    <div id="play-next-btn" class="context-menu-item">
+        <i data-feather="corner-down-right"></i><span>Play Next</span>
+    </div>
+    <div id="add-to-queue-btn" class="context-menu-item">
+        <i data-feather="list"></i><span>Add to Queue</span>
+    </div>
+    <div id="show-in-explorer-btn" class="context-menu-item">
+        <i data-feather="folder"></i><span>Show in Explorer</span>
+    </div>
+    <div id="delete-btn" class="context-menu-item danger">
+        <i data-feather="trash-2"></i><span>Delete Song</span>
+    </div>
+</div>
+
+<!-- ===== PLAYLIST CONTEXT MENU (Initially Hidden) ===== -->
+<div id="playlist-context-menu" class="context-menu hidden">
+    <div id="playlist-rename-btn" class="context-menu-item">
+        <i data-feather="edit-3"></i><span>Rename</span>
+    </div>
+    <div id="playlist-export-btn" class="context-menu-item">
+        <i data-feather="upload"></i><span>Export Playlist...</span>
+    </div>
+    <div id="playlist-delete-btn" class="context-menu-item danger">
+        <i data-feather="trash-2"></i><span>Delete</span>
+    </div>
+</div>
+
+<!-- ===== SONG TOOLTIP (Initially Hidden) ===== -->
+<div id="song-tooltip" class="song-tooltip">
+    <!-- JS-populated tag information -->
+</div>
+
+<!-- ===== OVERRIDE TOOLTIP (Initially Hidden) ===== -->
+<div id="override-tooltip" class="override-tooltip"></div>
+
+<!-- ===== IMPORT WARNING TOOLTIP (Initially Hidden) ===== -->
+<div id="import-warning-tooltip" class="override-tooltip"></div>
+
+<!-- ===== PROMPT MODAL (Initially Hidden) ===== -->
+<div id="prompt-modal" class="modal-overlay">
+    <div class="modal prompt-dialog">
+        <div class="modal-header">
+            <h3 id="prompt-title">Prompt</h3>
+        </div>
+        <div class="modal-content">
+            <label id="prompt-message" for="prompt-input"></label>
+            <input type="text" id="prompt-input" class="modal-input">
+            <p id="prompt-error" class="prompt-error-message hidden"></p>
+        </div>
+        <div class="confirmation-actions">
+            <button id="prompt-cancel-btn" class="modal-btn">Cancel</button>
+            <button id="prompt-ok-btn" class="modal-btn accent">OK</button>
+        </div>
+    </div>
+</div>
+
+<!-- ===== CONFIRMATION MODAL (Initially Hidden) ===== -->
+<div id="confirmation-modal" class="modal-overlay">
+    <div class="modal confirmation-dialog">
+        <div class="modal-header">
+            <h3 id="confirmation-title">Confirmation</h3>
+        </div>
+        <div class="modal-content">
+            <p id="confirmation-message"></p>
+            <div class="confirmation-actions">
+                <button id="confirm-cancel-btn" class="modal-btn">Cancel</button>
+                <button id="confirm-ok-btn" class="modal-btn danger">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+<script type="module" src="main.js"></script>
+</body>
+</html>

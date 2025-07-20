@@ -1,0 +1,396 @@
+/* ==========================================================================
+   Player Panel
+   ========================================================================== */
+
+.player-panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    background: var(--panel-glass-bg);
+    backdrop-filter: blur(25px);
+    border-radius: 12px;
+    margin: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    position: relative;
+    z-index: 1;
+}
+
+.player-panel::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: radial-gradient(circle, var(--glow-color) 0%, transparent 60%);
+    transform: translate(-50%, -50%);
+    filter: blur(150px);
+    opacity: 0;
+    transition: opacity 2s ease-in-out, transform 2s ease-in-out, background 2s ease-in-out;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.player-panel.is-playing::before { opacity: 0.3; }
+
+.album-art-container {
+    width: 300px;
+    height: 300px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+    background-color: rgba(0,0,0,0.2);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+#album-art-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: opacity 0.4s ease;
+}
+.album-art-placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 8px;
+    width: 100px;
+    height: 100px;
+    position: absolute;
+}
+.eq-bar {
+    width: 8px;
+    background: #404040;
+    border-radius: 4px;
+    height: 1%;
+    transition: height 0.05s ease-out, background-color 0.4s ease;
+}
+
+.player-panel.is-playing .eq-bar { background: var(--accent-color); }
+
+.song-info {
+    text-align: center;
+    margin-bottom: 20px;
+    min-height: 60px;
+}
+#current-song-title { margin: 0 0 5px 0; font-size: 1.8em; font-weight: 700; }
+#current-song-artist { margin: 0; color: var(--text-secondary); font-size: 1em; }
+
+.seek-bar-container {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    max-width: 500px;
+    gap: 15px;
+    margin-bottom: 10px;
+    font-size: 0.8em;
+    color: var(--text-secondary);
+}
+
+#current-time, #total-duration {
+    width: 45px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+}
+
+.seek-bar-wrapper {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+#marker-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allow clicks to pass through to the seek bar */
+}
+
+.marker {
+    position: absolute;
+    /* Position the marker so its tail ends at the top of the seek bar track */
+    top: -7px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Make the click/drag target a bit larger than the visual element */
+    width: 12px;
+    height: 16px;
+    transform: translateX(-50%);
+    cursor: grab;
+    pointer-events: auto;
+    transition: all 0.2s ease;
+    z-index: 5;
+}
+.marker:hover {
+    z-index: 7;
+}
+.marker.dragging {
+    cursor: grabbing;
+}
+
+/* This is the rectangular "head" of the marker */
+.marker-head {
+    width: 8px;
+    height: 8px;
+    background-color: var(--text-secondary);
+    border-radius: 2px;
+    transition: background-color 0.2s ease;
+}
+
+/* This is the triangular "tail" that points down */
+.marker-tail {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid var(--text-secondary);
+    transition: border-top-color 0.2s ease;
+}
+
+.marker.selected {
+    transform: translateX(-50%) scale(1.1);
+    z-index: 6;
+}
+.marker.selected .marker-head {
+    background-color: var(--accent-color);
+}
+.marker.selected .marker-tail {
+    border-top-color: var(--accent-color);
+}
+
+.marker.dragging {
+    transform: translateX(-50%) translateY(-5px) scale(1.2);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+    z-index: 10;
+}
+
+.marker.to-be-deleted .marker-head {
+    background-color: var(--danger-color);
+}
+.marker.to-be-deleted .marker-tail {
+    border-top-color: var(--danger-color);
+}
+
+.controls { display: flex; align-items: center; gap: 16px; }
+
+.control-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all var(--animation-speed) ease;
+    border-radius: 50%;
+    padding: 8px;
+    position: relative;
+}
+.control-btn:hover { color: var(--text-primary); transform: scale(1.1); }
+
+.control-btn svg {
+    width: 1.2em;
+    height: 1.2em;
+}
+
+#mini-player-btn {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+.control-btn.play-btn {
+    background-color: var(--accent-color);
+    color: black;
+    width: 56px;
+    height: 56px;
+    box-shadow: 0 4px 20px -5px var(--glow-color);
+}
+.control-btn.play-btn:hover {
+    background-color: var(--accent-hover);
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px -8px var(--glow-color);
+}
+.control-btn.play-btn.overridden {
+    background-color: #737347;
+    box-shadow: 0 4px 20px -5px rgba(74, 85, 104, 0.7);
+    position: relative;
+    animation: pulse-override 2s infinite;
+}
+.control-btn.play-btn.overridden:hover {
+    background-color: #545435; /* Darker on hover */
+    transform: scale(1); /* Disable hover scale effect */
+}
+
+.control-btn.secondary { opacity: 0.7; }
+.control-btn.secondary.active {
+    opacity: 1;
+    color: var(--accent-color);
+    text-shadow: 0 0 10px var(--glow-color);
+}
+
+/* Base style for the active-state dot (initially hidden) */
+.control-btn.secondary::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    pointer-events: none;
+}
+
+/* Fade in the dot when the button is active */
+.control-btn.secondary.active::after {
+    opacity: 1;
+}
+
+/* Specifically hide the dot for the repeat-one mode */
+#repeat-btn.secondary.active:has(.repeat-one)::after {
+    opacity: 0;
+}
+
+.control-btn .repeat-one {
+    position: absolute;
+    font-size: 0.7em;
+    font-weight: 700;
+    top: 2px;
+    right: 2px;
+    color: var(--accent-color);
+    text-shadow: 0 0 5px var(--bg-color);
+    pointer-events: none;
+    opacity: 0;
+    animation: repeat-one-fade-in 0.3s forwards;
+}
+
+/* Shuffle Icon Animation */
+.shuffle-icon .shuffle-line-top,
+.shuffle-icon .shuffle-line-bottom {
+    transition: transform 0.4s ease-in-out;
+}
+
+#shuffle-btn.active .shuffle-icon .shuffle-line-top {
+    /* M4 4l5 5 moves to M15 15l... position. Translate by (11, 11) */
+    transform: translate(11px, 11px);
+}
+
+#shuffle-btn.active .shuffle-icon .shuffle-line-bottom {
+    /* M15 15l6 6 moves to M4 4... position. Translate by (-11, -11) */
+    transform: translate(-11px, -11px);
+}
+
+/* Loop Icon Animation */
+#loop-icon .loop-top,
+#loop-icon .loop-bottom {
+    transition: transform 0.4s ease-in-out;
+    transform-origin: center;
+}
+#repeat-btn.active #loop-icon .loop-top,
+#repeat-btn.active #loop-icon .loop-bottom {
+    transform: rotate(180deg);
+}
+
+
+.volume-container { display: flex; align-items: center; gap: 8px; }
+
+/* New Volume Icon State Styles */
+#volume-icon path, #volume-icon g {
+    transition: opacity 0.2s ease-in-out;
+}
+
+#volume-icon .volume-mute-x {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Volume States applied to the SVG element */
+#volume-icon.volume-state-high .volume-wave-small,
+#volume-icon.volume-state-high .volume-wave-large { opacity: 1; }
+#volume-icon.volume-state-high .volume-mute-x { opacity: 0; }
+
+#volume-icon.volume-state-low .volume-wave-small { opacity: 1; }
+#volume-icon.volume-state-low .volume-wave-large { opacity: 0; }
+#volume-icon.volume-state-low .volume-mute-x { opacity: 0; }
+
+#volume-icon.volume-state-mute .volume-wave-small,
+#volume-icon.volume-state-mute .volume-wave-large { opacity: 0; }
+#volume-icon.volume-state-mute .volume-mute-x { opacity: 1; }
+
+.volume-container #volume-slider {
+    width: 0;
+    opacity: 0;
+    transition: width var(--animation-speed) ease, opacity var(--animation-speed) ease;
+    margin-left: -8px;
+}
+.volume-container:hover #volume-slider { width: 100px; opacity: 1; margin-left: 0; }
+
+.override-tooltip {
+    position: fixed;
+    z-index: 1002;
+    background: var(--modal-glass-bg);
+    backdrop-filter: blur(15px);
+    border-radius: 8px;
+    padding: 10px 14px;
+    max-width: 280px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(5px) scale(0.95);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.override-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.override-tooltip strong {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    padding-bottom: 4px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.override-tooltip ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.override-tooltip li {
+    font-size: 0.9em;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

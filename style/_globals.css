@@ -1,0 +1,67 @@
+/* ==========================================================================
+   Global Styles & Variables
+   ========================================================================== */
+
+:root {
+    --bg-color: #121212;
+    --sidebar-width: 300px;
+    --sidebar-color: #040404;
+    --panel-glass-bg: rgba(24, 24, 24, 0.6);
+    --modal-glass-bg: rgba(40, 40, 40, 0.7);
+    --border-color: rgba(255, 255, 255, 0.1);
+    --text-primary: #ffffff;
+    --text-secondary: #b3b3b3;
+    --accent-color: #1DB954;
+    --accent-hover: #1ED760;
+    --accent-bg-glow: rgba(29, 185, 84, 0.15);
+    --accent-selection-bg: rgba(29, 185, 84, 0.2);
+    --slider-track: #535353;
+    --slider-thumb: #b3b3b3;
+    --glow-color: rgba(29, 185, 84, 0.7);
+    --danger-color: #e53e3e;
+    --danger-hover: #c53030;
+    --animation-speed: 0.3s;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    background-color: var(--bg-color);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: relative;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+body.resizing, body.resizing * {
+    cursor: col-resize !important;
+    user-select: none !important;
+}
+
+.spinner {
+    width: 1em;
+    height: 1em;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: var(--text-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+i.feather {
+    width: 1em;
+    height: 1em;
+    stroke-width: 2;
+}

@@ -1,0 +1,60 @@
+/* ==========================================================================
+   Splash Screen
+   ========================================================================== */
+
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color);
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease-out;
+}
+
+#splash-screen.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.splash-content {
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.splash-content .fnote-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 24px;
+}
+
+.splash-status-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.1em;
+}
+
+#splash-error-container {
+    margin-top: 16px;
+    padding: 16px;
+    border: 1px solid var(--danger-color);
+    background-color: rgba(229, 62, 62, 0.1);
+    border-radius: 8px;
+    max-width: 350px;
+    color: var(--text-primary);
+}
+
+#splash-error-message {
+    margin: 0 0 16px 0;
+    color: #f87171;
+    line-height: 1.5;
+}
+
+#splash-retry-btn {
+    min-width: 100px;
+}
