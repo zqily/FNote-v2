@@ -18,7 +18,7 @@
 No subscriptions. No ads. Just your music.
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/zqily/FNote-v2/main/.github/assets/fnote_screenshot.png" alt="FNote Screenshot" width="800"/>
+  <img src="https://raw.githubusercontent.com/zqily/FNote-v2/main/.github/fnote_screenshot.png" alt="FNote Screenshot" width="800"/>
 </div>
 
 ## ✨ Key Features
