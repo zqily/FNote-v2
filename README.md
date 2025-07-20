@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/zqily/FNote-v2/main/.github/favicon.png" alt="FNote Logo" width="200"/>
+  <img src="https://raw.githubusercontent.com/zqily/FNote-v2/main/.github/icon.png" alt="FNote Logo" width="200"/>
 
   <h1>FNote Music Player</h1>
   <p><strong>Your Personal, Offline-First Music Library. Built for Creators, Curators, and You.</strong></p>
