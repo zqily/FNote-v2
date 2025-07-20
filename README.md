@@ -70,7 +70,7 @@ My role was to:
 -   Debug, test, and stitch together the generated code.
 -   Refine the UI/UX based on the results.
 
-This project demonstrates the incredible power of modern AI as a tool for creation and rapid prototyping. It's not just a music player; it's a testament to a new era of software development.
+This project demonstrates the incredible power of modern AI as a tool for creation and rapid prototyping. In short, it's a testament to a new era of software development.
 
 ## 👤 About the Author
 
