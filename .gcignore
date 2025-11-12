@@ -1,0 +1,11 @@
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+*.ico
+*.sqlite
+*.json
+.github/
+*.md
+LICENSE

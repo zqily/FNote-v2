@@ -1,0 +1,9 @@
+comtypes
+mutagen
+numpy
+packaging
+Pillow
+pycaw
+pypresence
+pywebview
+requests

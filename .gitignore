@@ -67,3 +67,6 @@ songs/
 
 # Other
 node_modules/
+versions/
+converter.py
+target.txt
